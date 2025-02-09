@@ -10,7 +10,7 @@ import { Checkbox } from "../ui/checkbox";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "@/hooks/useAuth";
 import AnimatedButton from "../animation/animatedButton";
-import { Providers } from "./providers";
+import { Providers } from "../global/providers/providers";
 interface Props {}
 
 
@@ -20,7 +20,7 @@ const RegisterForm = (props: Props) => {
   const { register, onFormSubmit, errors, isPending } = useAuth("register");
 
   return (
-    <form onSubmit={onFormSubmit} className="w-full flex flex-col gap-4">
+    <form onSubmit={onFormSubmit} className="w-full  flex flex-col gap-4">
       <motion.div
         variants={item_variants}
         initial={"hidden"}

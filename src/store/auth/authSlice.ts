@@ -3,7 +3,6 @@ import { TUser } from "./type";
 import { logoutUser, setUser } from "./fn";
 
 
-
 const initialState:{userInfo:TUser | undefined}={
     userInfo:undefined,
 }
@@ -14,7 +13,7 @@ const authSlice=createSlice({
     initialState,
     reducers:{
         SetUser:setUser,
-        LogoutUser:logoutUser
+        LogoutUser:logoutUser,
     }
 })
 

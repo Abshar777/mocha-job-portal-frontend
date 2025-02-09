@@ -1,4 +1,3 @@
-"use client";
 import BlurCircleAnimation from "@/components/animation/blurCircleAnimation";
 import QuatePart from "@/components/global/quatePart";
 import React from "react";
@@ -8,6 +7,7 @@ interface Props {
 }
 
 const layout = ({ children }: Props) => {
+  
   return (
     <div className="bg-secondary text-background w-full h-screen overflow-hidden relative p-1">
       <div className="w-full grid  h-full grid-cols-3">

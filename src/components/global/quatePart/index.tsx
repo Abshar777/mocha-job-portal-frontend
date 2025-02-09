@@ -1,12 +1,16 @@
-import Image from "next/image";
+"use client"
+import { quateImages } from "@/constants/authLayout";
+import Image, { StaticImageData } from "next/image";
 import React from "react";
 import quate from "@/../public/loginFormImage.f7f800ccb930349b460a.png";
 import TypingAnimation from "@/components/animation/typingAnimation";
 import { Button } from "@heroui/react";
 import logo from "@/../public/logo.png";
 import Logo from "@/../public/svgs/logo.svg";
+
 import { motion } from "framer-motion";
 import { container_variants, item_variants } from "@/constants/framer-motion";
+import { usePathname } from "next/navigation";
 interface Props {}
 
 const quotes = [
@@ -18,6 +22,9 @@ const quotes = [
 ];
 
 const index = (props: Props) => {
+  const pathname = usePathname()
+  console.log(pathname)
+  const image = quateImages.find((item) => item.path === pathname)?.image as StaticImageData
   return (
     <motion.div
       variants={container_variants}
@@ -37,10 +44,11 @@ const index = (props: Props) => {
             className="overflow-hidden w-full h-full  p-[5rem]"
           >
             <Image
-              src={quate}
+              src={image}
               alt="quate"
               className="object-contain random-moveAnimation  h-full"
             />
+
           </motion.div>
         </div>
       </div>

@@ -18,6 +18,7 @@ interface Props {
   type?: "button" | "submit" | "reset" | undefined;
   className?: string;
   spinner?: React.JSX.Element;
+  disabled?: boolean;
 }
 
 const AnimatedButton = ({
@@ -29,17 +30,18 @@ const AnimatedButton = ({
   className,
   type = "button",
   spinner = <Spinner size="sm" color="secondary" />,
+  disabled = false,
 }: Props) => {
   return (
     <Button
-
+      disabled={disabled}
       isLoading={isLoading}
       type={type}
       color={color}
       size={size}
 
       className={cn(
-        "w-full font-semibold text-secondary rounded-2xl",
+        "w-full font-semibold disabled:cursor-not-allowed disabled:opacity-50 hover:disabled:opacity-50 text-secondary rounded-2xl",
         className
       )}
       spinner={null}

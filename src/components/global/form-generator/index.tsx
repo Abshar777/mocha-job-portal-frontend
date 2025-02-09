@@ -21,6 +21,7 @@ type Props = {
   className?: string;
   showError?: boolean;
   Icon?: IconType;
+  maxLength?: number;
   checked?: boolean;
 };
 
@@ -38,6 +39,7 @@ const FormGenerator = ({
   showError = true,
   checked,
   Icon,
+  maxLength,
 }: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const [Type, setType] = useState<string>(type || "text");
@@ -50,7 +52,7 @@ const FormGenerator = ({
         >
           <p className="flex font-semibold items-center gap-1">
             {label && label}
-            <span className="text-primary">*</span>
+            {label && <span className="text-primary">*</span>}
           </p>
 
           <div className="flex relative items-center justify-end">
@@ -58,14 +60,15 @@ const FormGenerator = ({
               <Icon className="absolute text-sm left-2 text-muted-foreground" />
             )}{" "}
             <Input
+              maxLength={maxLength}
               id={`input-${label}`}
               type={Type}
               placeholder={placeholder}
               className={cn(
-                className,
                 `bg-foreground text-secondary px-[1.7rem] ${
                   errors[name] && "errInput"
-                } flex-1`
+                } flex-1`,
+                className
               )}
               {...register(name)}
             />

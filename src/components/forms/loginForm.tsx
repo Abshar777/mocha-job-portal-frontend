@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Checkbox } from "../ui/checkbox";
 import { useAuth } from "@/hooks/useAuth";
 import AnimatedButton from "../animation/animatedButton";
-import { Providers } from "./providers";
+import { Providers } from "../global/providers/providers";
 
 const LoginForm = () => {
   const { register, onFormSubmit, errors, isPending } = useAuth("login");

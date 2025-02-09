@@ -3,27 +3,29 @@ import Image from "next/image";
 import Logo from "@/../public/svgs/dark-logo.svg";
 import { motion } from "framer-motion";
 import { container_variants, item_variants } from "@/constants/framer-motion";
+import OtpForm from "@/components/forms/otpForm";
 import RegisterForm from "@/components/forms/registerForm";
-import { useRouter } from "nextjs-toploader/app";
-import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { redirect } from "next/navigation";
-
-
+import { useSelector } from "react-redux";
+import { useRouter } from "nextjs-toploader/app";
+import { useEffect, useState } from "react";
 interface Props {}
 
 const page = (props: Props) => {
-
   const { userInfo } = useSelector((state: RootState) => state.Auth);
-  console.log(userInfo, "🟢 userInfo");
-  if (userInfo) {
-    if (userInfo.verified) {
-      return redirect("/")
-    } else {
-      return redirect("/auth/otp");
-    }
+  const router = useRouter();
+  const [clientUserInfo, setClientUserInfo] = useState<typeof userInfo | null>(
+    null
+  );
 
-  }
+  useEffect(() => {
+    if (!userInfo) {
+      router.push("/auth/login");
+      return;
+    }
+    setClientUserInfo(userInfo); 
+  }, [userInfo]);
+
   return (
     <div className="w-full relative z-[1] h-full flex flex-col items-center justify-center">
       <div className="absolute md:hidden flex justify-center  w-full  bottom-0 scale-[.9] left-0 ">
@@ -35,21 +37,23 @@ const page = (props: Props) => {
         animate={"visible"}
         className=" h-full flex flex-col md:p-1 p-2 gap-6 items-center justify-center"
       >
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col px-[4rem] items-center justify-center">
           <motion.h1
             variants={item_variants}
             className="text-3xl  font-secondary  font-bold capitalize"
           >
-            Create an account
+            OTP
           </motion.h1>
           <motion.p
             variants={item_variants}
             className="text-foreground/60 text-center text-sm"
           >
-            Enter your details below to create an account
+            Enter the OTP sent to <span className="font-bold">{clientUserInfo?.email}</span> to verify
+            your account
           </motion.p>
         </div>
-        <RegisterForm />
+
+        <OtpForm />
       </motion.div>
     </div>
   );

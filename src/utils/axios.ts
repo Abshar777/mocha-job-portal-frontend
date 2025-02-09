@@ -1,11 +1,11 @@
 import { getRereshToken } from '@/api/auth';
-import { LogoutUser } from '@/store/auth/authSlice';
+import { LogoutUser, SetUser } from '@/store/auth/authSlice';
 import store from '@/store/store';
 import axios, { AxiosInstance } from 'axios';
 
 const axiosInstance: AxiosInstance = axios.create({
-    baseURL: process.env.BACKEND_URL,
-    withCredentials: true,
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+    withCredentials: true, 
     timeout: 10000,
 });
 
