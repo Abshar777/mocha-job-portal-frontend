@@ -4,17 +4,10 @@ import Logo from "@/../public/svgs/dark-logo.svg";
 import { motion } from "framer-motion";
 import { container_variants, item_variants } from "@/constants/framer-motion";
 import LoginForm from "@/components/forms/loginForm";
-import { authRouteProtect } from "@/security/authRouteProtect";
-import { useEffect } from "react";
-import Authloading from "./loading";
 
-interface Props {}
 
-const page = (props: Props) => {
-  const { isLoading } = authRouteProtect();
-  if (isLoading) {
-    return <Authloading />;
-  }
+const page = () => {
+
   return (
     <div className="w-full relative z-[1] h-full flex flex-col items-center justify-center">
       <div className="absolute md:hidden flex justify-center  w-full  bottom-0 scale-[.9] left-0 ">

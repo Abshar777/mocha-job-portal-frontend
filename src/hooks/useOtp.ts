@@ -1,6 +1,6 @@
 'use client'
 
-import { otpStatus, verifyOtp } from "@/api/auth";
+import { otpStatus, resendOtpApi, verifyOtp } from "@/api/auth";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
@@ -9,15 +9,19 @@ import { SetUser } from "@/store/auth/authSlice";
 import { useSelector } from "react-redux";
 import { redirect } from "next/navigation";
 import { TUser } from "@/store/auth/type";
+import { useRouter } from "nextjs-toploader/app";
 
-const OTP_EXPIRY_TIME = 5 * 60 * 1000; // 5 minutes
 
-const useOtp = (type: string) => {
+const OTP_EXPIRY_TIME = 1 * 60 * 1000; // 5 minutes
+
+const useOtp = () => {
+    const router = useRouter();
     const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
     const [isPending, setIsPending] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [resend, setResend] = useState(false);
     const [remainingTime, setRemainingTime] = useState<number>(0);
+    const [isResendLoading, setIsResendLoading] = useState(false);
     const userInfo = useSelector((state: RootState) => state.Auth.userInfo);
 
     useEffect(() => {
@@ -25,7 +29,7 @@ const useOtp = (type: string) => {
             redirect("/auth/login");
             return;
         }
-        otpCheck();
+        otpCheck(userInfo?.email as string);
     }, []);
 
     useEffect(() => {
@@ -34,7 +38,6 @@ const useOtp = (type: string) => {
                 setRemainingTime((prev) => {
                     if (prev <= 1) {
                         clearInterval(timer);
-                        setResend(true);
                         return 0;
                     }
                     return prev - 1;
@@ -42,8 +45,12 @@ const useOtp = (type: string) => {
             }, 1000);
 
             return () => clearInterval(timer);
+        } else {
+            setResend(true);
+            setOtp(Array(4).fill(""));
         }
     }, [remainingTime]);
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -52,35 +59,59 @@ const useOtp = (type: string) => {
         try {
             const { data } = await verifyOtp({ otp: otp.join(""), email: userInfo?.email as string });
             if (data.success) {
+                console.log(userInfo?.verified, "🟢 user info");
+                const path = data.type=="FORGET_PASSWORD" ? "/auth/conform-password" : "/";
+                console.log(path, "🟢 path");
                 store.dispatch(SetUser({ ...userInfo as TUser, verified: true }));
                 toast.success("OTP verified successfully");
                 setOtp(Array(4).fill(""));
-                if (type === "login") redirect("/");
+                router.push(path);
             }
+
+
         } catch (error) {
+            console.log("🔴 error in verify otp", (error as Error).message);
             const err = error as AxiosError;
             const message = (err.response?.data as { message: string })?.message || "An unexpected error occurred.";
             toast.error(message);
-        } finally {
             setIsPending(false);
         }
     };
 
-    const otpCheck = async () => {
+
+    const otpCheck = async (email: string) => {
         try {
-            const { data } = await otpStatus({ email: userInfo?.email as string });
-            if (!data?.hasOtp && userInfo?.verified) {
-                redirect("/");
+            console.log(userInfo, "🟢 user info");
+            const { data, verified } = await otpStatus({ email: email });
+            console.log(data, "data ")
+            if (data.user) {
+                store.dispatch(SetUser({ ...data.user }));
+            }
+            if (!data?.hasOtp && verified) {
+                router.push("/");
                 return;
             }
+            console.log("🟢 otp check is done");
+            setIsPending(false);
+            setResend(false)
             startTimer(data.createdAt);
+
         } catch (error) {
-            console.log("OTP Check Error:", error);
-            setResend(true);
-        } finally {
+            console.log("🔴 error in otp check", (error as Error).message);
+            const err = error as AxiosError;
+            const verified = (err.response?.data as { verified: boolean })?.verified;
+            const user = (err.response?.data as { user: TUser })?.user;
+            console.log(err, verified)
+            if (user) store.dispatch(SetUser({ ...user }));
+            if (!verified) setResend(true);
+            else router.push("/");
+
             setIsLoading(false);
+
+
         }
     };
+
 
     const startTimer = (createdAt: string) => {
         const expiryTime = new Date(createdAt).getTime() + OTP_EXPIRY_TIME;
@@ -90,7 +121,31 @@ const useOtp = (type: string) => {
         setResend(timeLeft === 0);
     };
 
-    return { handleSubmit, isPending, otp, setOtp, isLoading, resend, remainingTime };
+
+    async function resendOtp() {
+        setOtp(Array(4).fill(""));
+        setIsResendLoading(true);
+        try {
+            const { data, success } = await resendOtpApi({ email: userInfo?.email as string });
+            if (success) {
+                setResend(false);
+                setRemainingTime(data.createdAt);
+                toast.success("OTP sent successfully");
+                startTimer(data.createdAt);
+
+            }
+        } catch (error) {
+            const err = error as AxiosError;
+            const message = (err.response?.data as { message: string })?.message || "An unexpected error occurred.";
+            toast.error(message);
+        } finally {
+            setIsResendLoading(false);
+        }
+    }
+
+
+    return { handleSubmit, isPending, otp, setOtp, isLoading, resend, remainingTime, resendOtp, isResendLoading,otpCheck };
+
 };
 
 export default useOtp;

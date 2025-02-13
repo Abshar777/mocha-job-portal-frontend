@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Checkbox } from "../ui/checkbox";
 import { useAuth } from "@/hooks/useAuth";
 import AnimatedButton from "../animation/animatedButton";
-import { Providers } from "../global/providers/providers";
+import { OAuthProviders } from "../global/OAuthProviders";
 
 const LoginForm = () => {
   const { register, onFormSubmit, errors, isPending } = useAuth("login");
@@ -91,7 +91,7 @@ const LoginForm = () => {
         animate={"visible"}
         className="w-full h-[4rem] grid grid-cols-3 justify-items-center gap-2"
       >
-        {Providers}
+        {OAuthProviders}
       </motion.div>
       <Link href="/auth/register" className="text-sm  ">
         Dont have an account?

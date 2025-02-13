@@ -19,6 +19,7 @@ const page = (props: Props) => {
   );
 
   useEffect(() => {
+    console.log(userInfo,"🟢 userInfo")
     if (!userInfo) {
       router.push("/auth/login");
       return;

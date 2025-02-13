@@ -3,6 +3,7 @@ export enum Services {
     USER = "/api/user-service",
     PRODUCT = "/api/product-service",
     ORDER = "/api/order-service",
+    
 }
 
 

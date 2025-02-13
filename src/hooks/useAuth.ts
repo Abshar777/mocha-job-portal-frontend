@@ -25,52 +25,27 @@ export const useAuth = (type: "login" | "register") => {
     function onSubmit(response: { data: ApiResponse<any> }) {
         const AuthApiResponse = response?.data
         const token = AuthApiResponse?.token as string;
-        reset()
+
         localStorage.setItem("__accessToken", token);
         if (AuthApiResponse.data.verified) {
+            console.log("verified")
             router.push("/")
         } else {
+            console.log("not verified")
             router.push("/auth/otp")
+            
         }
+        reset()
         dispatch(SetUser(AuthApiResponse.data))
         const message = type === "login" ? "User logged in successfully" : "User registered successfully"
         toast.success(message);
 
     }
+
+ 
     return { register, onFormSubmit, errors, reset, isPending }
 
 
 
 }
 
-export const useCheckUser = async () => {
-    const publicRoutes = ["/auth/login", "/auth/register"];
-    const dispatch = useDispatch<AppDispatch>()
-    const { userInfo } = useSelector((state: RootState) => state.Auth);
-    console.log(userInfo, "🟢 userInfo");
-    const path = usePathname()
-    if (userInfo) {
-        try {
-            const { data } = await check()
-            if (data) {
-                dispatch(SetUser(data))
-                if (data.verified && publicRoutes.includes(path)) {
-                    return redirect("/")
-                } else {
-                    return redirect("/auth/otp")
-                }
-            }
-            return true
-
-        } catch (error) {
-            console.log(error, "🔴 error in useCheckUser")
-            dispatch(LogoutUser())
-            return true
-        }
-
-
-
-
-
-    }
-}

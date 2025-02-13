@@ -1,39 +1,30 @@
 "use client";
 import { check, login } from "@/api/auth";
+import { conformPasswordAccessApi } from "@/api/password";
 import { RootState } from "@/store/store";
 import { Button } from "@heroui/react";
+import { signIn } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 const Page = () => {
-  const userInfo = useSelector((state: RootState) => state.Auth.userInfo);
-  const [clientUserInfo, setClientUserInfo] = useState<typeof userInfo | null>(null);
-
-  useEffect(() => {
-    setClientUserInfo(userInfo); // Ensures it only updates on the client
-  }, [userInfo]);
-
-  const handleLogin = async () => {
+  const handleClick = async () => {
     try {
-      const res = await login({ email: "absharameen625@gmail.com", password: "12345678" });
-      console.log(res, "🟢 res");
-      const token = res.data.token;
-      localStorage.setItem("__accessToken", token);
-      const checkRes = await check();
-      console.log(checkRes, "🟢 checkRes");
+      const { data } = await conformPasswordAccessApi();
+      console.log(data, "data");
     } catch (error) {
-      console.log(error, "🔴 error");
-      toast.error("Error logging in");
+      toast.error("Something went wrong", {
+        description: (error as Error).message?.toString(),
+      });
+      console.log(error, "error");
     }
   };
-
   return (
     <div className="flex bg-zinc-900 flex-col items-center justify-center h-screen">
-      <Button color="primary" onClick={handleLogin}>
+      <Button color="primary" onPress={handleClick}>
         Login
       </Button>
-      <h1>{clientUserInfo?.email ?? "Loading..."}</h1>
     </div>
   );
 };

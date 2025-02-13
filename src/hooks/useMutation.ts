@@ -14,7 +14,7 @@ export const useMutationData = (mutationKey: MutationKey,
         onError(error) {
             const data = (error as unknown as AxiosError).response?.data as { message?: string }
             console.log(data, "error")
-            if (data?.message) toast.error(data.message)
+            if (data?.message) toast.error(data.message,)
             else toast.error("An unexpected error occurred.", {
                 description: error.message?.toString()
             })

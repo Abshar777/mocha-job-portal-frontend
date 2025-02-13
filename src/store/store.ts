@@ -1,10 +1,9 @@
-"use client"
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import authSlice from "./auth/authSlice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import {encryptTransform} from "redux-persist-transform-encrypt";
-
+import persnolDetailsSlice from "./persnolaDetails/persnolaDetailsSlice";
 const secret=process.env.PERSIST_TRANSFORM_ENCRYPT_SECRET ||"fallback-secret-key";
 const encryptor = encryptTransform({
   secretKey: secret , 
@@ -20,7 +19,8 @@ const persistConfig:any =( {
 });
 
 const rootReducer = combineReducers({
-    Auth: authSlice
+    Auth: authSlice,
+    PersnolDetails: persnolDetailsSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -33,6 +33,7 @@ const store = configureStore({
               ignoredActions:['persist/PERSIST']
             }
         })
+
 })
 
 export const persistor = persistStore(store);

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TUser } from "./type";
-import { logoutUser, setUser } from "./fn";
+import { logoutUser, setUser, updateUser } from "./fn";
 
 
 const initialState:{userInfo:TUser | undefined}={
@@ -14,8 +14,10 @@ const authSlice=createSlice({
     reducers:{
         SetUser:setUser,
         LogoutUser:logoutUser,
+        UpdateUser:updateUser
+        
     }
 })
 
-export const {SetUser,LogoutUser}= authSlice.actions
+export const {SetUser,LogoutUser,UpdateUser}= authSlice.actions
 export default authSlice.reducer

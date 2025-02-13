@@ -6,5 +6,5 @@ export interface TUser {
     name: string,
     role: Role.JOBSEEKER | Role.RECRUITER,
     verified: boolean,
-    profilePicture: string,
+    profilePicture?: string,
 }

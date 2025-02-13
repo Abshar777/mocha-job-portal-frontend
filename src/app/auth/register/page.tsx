@@ -4,26 +4,11 @@ import Logo from "@/../public/svgs/dark-logo.svg";
 import { motion } from "framer-motion";
 import { container_variants, item_variants } from "@/constants/framer-motion";
 import RegisterForm from "@/components/forms/registerForm";
-import { useRouter } from "nextjs-toploader/app";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { redirect } from "next/navigation";
 
 
 interface Props {}
 
 const page = (props: Props) => {
-
-  const { userInfo } = useSelector((state: RootState) => state.Auth);
-  console.log(userInfo, "🟢 userInfo");
-  if (userInfo) {
-    if (userInfo.verified) {
-      return redirect("/")
-    } else {
-      return redirect("/auth/otp");
-    }
-
-  }
   return (
     <div className="w-full relative z-[1] h-full flex flex-col items-center justify-center">
       <div className="absolute md:hidden flex justify-center  w-full  bottom-0 scale-[.9] left-0 ">

@@ -10,7 +10,7 @@ import { Checkbox } from "../ui/checkbox";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "@/hooks/useAuth";
 import AnimatedButton from "../animation/animatedButton";
-import { Providers } from "../global/providers/providers";
+import { OAuthProviders } from "../global/OAuthProviders";
 interface Props {}
 
 
@@ -110,7 +110,7 @@ const RegisterForm = (props: Props) => {
         animate={"visible"}
         className="w-full h-[4rem] grid grid-cols-3 justify-items-center gap-2"
       >
-        {Providers}
+        {OAuthProviders}
       </motion.div>
       <Link href="/auth/login" className="text-sm  ">
         Already have an account?

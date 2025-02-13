@@ -7,7 +7,7 @@ import OtpInput from "../global/form-generator/otp-input";
 import useOtp from "@/hooks/useOtp";
 import Authloading from "@/app/auth/loading";
 const OtpForm = () => {
-  const { handleSubmit, isPending, resend, otp, setOtp, remainingTime } = useOtp("otp");
+  const { handleSubmit, isPending, resend, otp, setOtp, remainingTime, resendOtp, isResendLoading } = useOtp();
 
 
   return (
@@ -23,9 +23,9 @@ const OtpForm = () => {
       >
         <AnimatedButton
           disabled={resend}
-          isLoading={isPending}
+          isLoading={isPending || isResendLoading}
           text="Verify"
-          loadingText="Verifying"
+          loadingText={isResendLoading ? "Resending" : "Verifying"}
           color="primary"
           size="lg"
           type="submit"
@@ -33,12 +33,13 @@ const OtpForm = () => {
       </motion.div>
 
       <div className="flex items-center justify-between px-[4rem]">
-        <Link href="/auth/register" className="text-sm  ">
+        <p  className="text-sm  ">
           Didn't receive the code?
-          <span className=" ms-2 text-primary underline">Resend</span>
-        </Link>
+          <span onClick={resendOtp} className=" cursor-pointer ms-2 text-primary underline">Resend</span>
+        </p>
         <p className="text-sm">{remainingTime}s</p>
       </div>
+
     </form>
   );
 };
