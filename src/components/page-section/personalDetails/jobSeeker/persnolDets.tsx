@@ -4,7 +4,7 @@ interface Props {
     
 }
 
-const page = (props: Props) => {
+const PersonalDetails = (props: Props) => {
     return (
         <div>
             
@@ -12,4 +12,4 @@ const page = (props: Props) => {
     )
 }
 
-export default page
+export default PersonalDetails

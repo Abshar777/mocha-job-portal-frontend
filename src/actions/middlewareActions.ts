@@ -46,7 +46,7 @@ export const accessTokenActions = async (request: NextRequest, token?: string) =
 
     if (!user.role && !pathname.startsWith("/details")) {
         console.log("🟠 user is verified and Auth route,he is not assigned to any role, so redirecting to role");
-        return NextResponse.redirect(new URL('/details/role', request.url));
+        return NextResponse.redirect(new URL('/details/', request.url));
     }
 
 

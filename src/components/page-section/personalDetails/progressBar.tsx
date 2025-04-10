@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Progress } from "@heroui/progress";
 import { item_variants } from "@/constants/framer-motion";
 import { motion } from "framer-motion";
@@ -11,12 +11,19 @@ interface Props {
 }
 
 const ProgressBar = ({ progress, section, length }: Props) => {
+  const [cols, setCols] = useState(4);
+  useEffect(() => {
+    setCols(length);
+  }, [length]);
   return (
     <motion.div
+      style={{
+        gridTemplateColumns: `repeat(${cols},1fr)`,
+      }}
       variants={item_variants}
       initial="hidden"
       animate="visible"
-      className={`w-full scale-[.8] md:px-[6rem] px-[2rem]  h-full grid grid-cols-5 gap-2`}
+      className={`w-full min-w-[30rem] scale-[.8] md:px-[6rem] px-[7rem]  h-full grid grid-cols-${cols} gap-2`}
     >
       {Array.from({ length }).map((_, index) => (
         <div
@@ -25,7 +32,6 @@ const ProgressBar = ({ progress, section, length }: Props) => {
         >
           <Progress
             aria-label={`Progress bar for section ${index + 1}`}
-            disableAnimation={section != index}
             classNames={{
               track: `bg-primary/10 ${
                 section >= index && "shadow-[-1px_1px_9px_2px_#39311c]"

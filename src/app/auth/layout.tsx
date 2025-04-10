@@ -1,5 +1,5 @@
 import BlurCircleAnimation from "@/components/animation/blurCircleAnimation";
-import QuatePart from "@/components/global/quatePart";
+import QuatePart from "@/components/page-section/quatePart";
 import React from "react";
 
 interface Props {

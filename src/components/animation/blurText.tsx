@@ -1,6 +1,5 @@
-"use client";
 import { useRef, useEffect, useState } from "react";
-import { motion, Variants } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 
 type BlurTextProps = {
   text?: string;
@@ -26,7 +25,7 @@ const BlurText: React.FC<BlurTextProps> = ({
   rootMargin = "0px",
   animationFrom,
   animationTo,
-  easing = "easeOutCubic",
+  easing = "easeOut",
   onAnimationComplete,
 }) => {
   const elements = animateBy === "words" ? text.split(" ") : text.split("");
@@ -49,6 +48,15 @@ const BlurText: React.FC<BlurTextProps> = ({
   const variants: Variants = {
     hidden: animationFrom || defaultFrom,
     visible: animationTo || defaultTo,
+    exit: {
+      filter: "blur(10px)",
+      opacity: 0,
+      y: direction === "top" ? 50 : -50,
+      transition: {
+        duration: 0.5,
+        ease: easing,
+      },
+    },
   };
 
   useEffect(() => {
@@ -70,28 +78,55 @@ const BlurText: React.FC<BlurTextProps> = ({
   }, [threshold, rootMargin]);
 
   return (
-    <p ref={ref} className={`blur-text ${className}`}>
-      {elements.map((element, index) => (
-        <motion.span
-          key={index}
-          variants={variants}
+    <div ref={ref} className={`blur-text ${className}`}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={text}
           initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          transition={{ delay: index * delay, duration: 0.5, ease: "easeInOut" }}
-          style={{ display: "inline-block", willChange: "transform, filter, opacity" }}
-          onAnimationComplete={() => {
-            animatedCount.current += 1;
-            if (animatedCount.current === elements.length && onAnimationComplete) {
-              console.log("Animation complete");
-              onAnimationComplete();
-            }
+          animate="visible"
+          exit="exit"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1 },
+            exit: { opacity: 0 },
+          }}
+          transition={{
+            duration: 0.3,
+            ease: easing,
           }}
         >
-          {element === " " ? "\u00A0" : element}
-          {animateBy === "words" && index < elements.length - 1 && "\u00A0"}
-        </motion.span>
-      ))}
-    </p>
+          {elements.map((element, index) => (
+            <motion.span
+              key={`${element}-${index}`}
+              variants={variants}
+              initial="hidden"
+              animate={inView ? "visible" : "hidden"}
+              transition={{
+                delay: index * delay,
+                duration: 0.5,
+                ease: easing,
+              }}
+              style={{
+                display: "inline-block",
+                willChange: "transform, filter, opacity",
+              }}
+              onAnimationComplete={() => {
+                animatedCount.current += 1;
+                if (
+                  animatedCount.current === elements.length &&
+                  onAnimationComplete
+                ) {
+                  onAnimationComplete();
+                }
+              }}
+            >
+              {element === " " ? "\u00A0" : element}
+              {animateBy === "words" && index < elements.length - 1 && "\u00A0"}
+            </motion.span>
+          ))}
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 };
 
