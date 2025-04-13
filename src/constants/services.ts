@@ -7,4 +7,9 @@ export enum Services {
 }
 
 
+export enum apiRoutes {
+    util = "/util",
+}
+
+
 

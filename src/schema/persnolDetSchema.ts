@@ -3,8 +3,8 @@ import { jobRoles } from "@/constants/personalDetailsConst";
 import { z } from "zod";
 
 export const DobScheme = z.object({
-    dob: z.string().regex(/^\d{2}-\d{2}-\d{2}$/, "Date must be in dd-mm-yy format"),
-    resume: z.string().url("Resume must be a valid URL"),
+    dob: z.string().regex(/^\d{2}-\d{2}-\d{4}$/, "Date must be in dd-mm-yyyy format"),
+    resume: z.string(),
     country: z.string().refine((val) => countries.includes(val), {
         message: "Invalid country",
     }),

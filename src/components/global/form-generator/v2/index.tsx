@@ -33,6 +33,9 @@ import { IoCloudUploadOutline as UploadIcon } from "react-icons/io5";
 import DownArrow from "@/components/icons/downArrow";
 import AnimatedButton from "@/components/animation/animatedButton";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { uploadFile } from "@/api/user";
+import { toast } from "sonner";
+import { Spinner } from "@heroui/react";
 
 type Props = {
   type?:
@@ -78,6 +81,7 @@ type Props = {
   min?: number;
   max?: number;
   minLength?: number;
+  loaderFn?: (isLoading: boolean) => void;
 };
 
 const FormGeneratorV2 = ({
@@ -101,20 +105,20 @@ const FormGeneratorV2 = ({
   minLength,
   min,
   max,
+  loaderFn = (isLoading: boolean) => {},
 }: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const [Type, setType] = useState<string>(type || "text");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState<string>("");
+  const [fileName, setFileName] = useState<string>(inputType == "upload" ? field.value?.split("/")?.pop()?.split("__")?.[1] || "" : "");
   const [searchTerm, setSearchTerm] = useState<string>(field.value || "");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const ref = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.focus();
-    }
-  }, [isOpen]);
 
+  useEffect(() => {
+    loaderFn(isLoading);
+  }, [isLoading]);
 
   switch (inputType) {
     case "input":
@@ -159,7 +163,14 @@ const FormGeneratorV2 = ({
                     } flex-1`,
                     className?.input
                   )}
-                  {...field}
+                  value={field.value}
+                  onChange={(e) => {
+                    if (type == "number") {
+                      field.onChange(Number(e.target.value));
+                    } else {
+                      field.onChange(e.target.value);
+                    }
+                  }}
                 />
                 {type == "password" && (
                   <i
@@ -655,17 +666,34 @@ const FormGeneratorV2 = ({
                     id={`upload-${label}`}
                     accept={acceptedFileTypes}
                     className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        // Check file size (convert maxFileSize from MB to bytes)
-                        if (file.size > maxFileSize * 1024 * 1024) {
-                          alert(`File size must be less than ${maxFileSize}MB`);
-                          e.target.value = "";
-                          return;
+                    onChange={async (e) => {
+                      try {
+                        console.log("🟢 uploading file");
+                        setIsLoading(true);
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          if (file.size > maxFileSize * 1024 * 1024) {
+                            e.target.value = "";
+                            throw new Error(
+                              `File size must be less than ${maxFileSize}MB`
+                            );
+                          }
+                          const data = await uploadFile(file);
+                          console.log("🟢 uploaded file", data);
+                          const url = `${process.env.NEXT_PUBLIC_CLOUD_FRONT_STREAM_URL}/${data?.url}`;
+                          setFileName(e.target.files?.[0]?.name || "");
+                          field.onChange(url);
+                          setIsLoading(false);
+                          toast.success("File uploaded successfully");
                         }
-                        setFileName(file.name);
-                        field.onChange(file);
+                      } catch (error: any) {
+                        toast.error(
+                          error?.response?.data?.message ||
+                            "Something went wrong"
+                        );
+                        setFileName("");
+                        field.onChange("");
+                        setIsLoading(false);
                       }
                     }}
                   />
@@ -677,7 +705,11 @@ const FormGeneratorV2 = ({
                     "bg-white absolute w-3 shadow-[0_0_13px_0_#ffffff59] md:text-sm text-xs text-black hover:bg-gray-200 rounded-2xl px-8 py-4",
                     className?.button
                   )}
-                  isLoading={false}
+                  spinner={
+                    <Spinner size="sm" className="text-black" color="default" />
+                  }
+                  disabled={isLoading}
+                  isLoading={isLoading}
                   text={field.value ? "Change" : buttonText}
                 />
               </div>

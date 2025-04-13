@@ -6,13 +6,23 @@ import { z } from "zod"
 
 
 export const useDobAndDets = () => {
-    const { jobSeeker, updateJobSeeker } = usePersonalDetails()
+    const { jobSeeker, updateJobSeeker, setDisabled } = usePersonalDetails()
 
-    const { form, onFormSubmit, watch } = useZodFormV2(DobScheme, () => { }, {
+    const { form, onFormSubmit, watch, errors, trigger } = useZodFormV2(DobScheme, () => { }, {
         dob: jobSeeker.dob || "",
         country: jobSeeker.country || "India",
         resume: jobSeeker.resume || ""
+    }, {
+        mode: 'onChange',
+        showToastOnError: false
     })
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            setDisabled(true)
+        } else {
+            setDisabled(false)
+        }
+    }, [Object.keys(errors).length])
 
     const DobANDDetails = watch()
     useEffect(() => {
@@ -22,7 +32,7 @@ export const useDobAndDets = () => {
                 ...DobANDDetails
             })
         }
-    }, [DobANDDetails.dob, DobANDDetails.country])
+    }, [DobANDDetails.dob, DobANDDetails.country, DobANDDetails.resume])
 
     return { form, onFormSubmit }
 }
@@ -34,13 +44,14 @@ export const usePrefrence = () => {
 
     const fn = () => { }
 
-    const { form, onFormSubmit, watch } = useZodFormV2(PrefrenceScheme, fn, {
+    const { form, onFormSubmit, watch, errors } = useZodFormV2(PrefrenceScheme, fn, {
         jobRole: jobSeeker.prefrence?.jobRole || "",
         city: jobSeeker.prefrence?.city || "",
         salary: jobSeeker.prefrence?.salary || 0
     });
 
     const prefrence = watch()
+    const { setDisabled } = usePersonalDetails()
     useEffect(() => {
         if (prefrence) {
             updateJobSeeker({
@@ -52,29 +63,53 @@ export const usePrefrence = () => {
         }
     }, [prefrence.city, prefrence.jobRole, prefrence.salary])
 
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            setDisabled(true)
+        } else {
+            setDisabled(false)
+        }
+    }, [Object.keys(errors).length])
+
     return { form, onFormSubmit }
 }
 
 
 export const useCompanyInformation = () => {
-    const { recruiter, updateRecruiter } = usePersonalDetails()
+    const { recruiter, updateRecruiter, setDisabled } = usePersonalDetails();
 
     const fn = () => { }
 
-    const { form, onFormSubmit, watch,setValue } = useZodFormV2(companyInformationScheme, fn, {
-        companyName: recruiter.companyName || "",
-        companyWebsite: recruiter.companyWebsite || "",
-        companyDescription: recruiter.companyDescription || "",
-        address: recruiter.companyAddress?.address || "",
-        country: recruiter.companyAddress?.country || "",
-        city: recruiter.companyAddress?.city || "",
-        pincode: String(recruiter.companyAddress?.pincode) || "",
-        companyLogo: recruiter.companyLogo || "",
-        industryType: recruiter.industryType || [],
-        numberOfEmployees: recruiter.numberOfEmployees || 0
-    })
+    const { form, onFormSubmit, watch, setValue, formState, errors } = useZodFormV2(
+        companyInformationScheme,
+        fn,
+        {
+            companyName: recruiter.companyName || "",
+            companyWebsite: recruiter.companyWebsite || "",
+            companyDescription: recruiter.companyDescription || "",
+            address: recruiter.companyAddress?.address || "",
+            country: recruiter.companyAddress?.country || "",
+            city: recruiter.companyAddress?.city || "",
+            pincode: String(recruiter.companyAddress?.pincode) || "",
+            companyLogo: recruiter.companyLogo || "",
+            industryType: recruiter.industryType || [],
+            numberOfEmployees: recruiter.numberOfEmployees || 0
+        },
+        {
+            mode: 'onChange',
+            showToastOnError: false
+        }
+    );
 
-    const companyInformation = watch()
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            setDisabled(true)
+        } else {
+            setDisabled(false)
+        }
+    }, [Object.keys(errors).length])
+
+    const companyInformation = watch();
     useEffect(() => {
         if (companyInformation) {
             updateRecruiter({
@@ -90,7 +125,11 @@ export const useCompanyInformation = () => {
         }
     }, [companyInformation.companyName, companyInformation.companyWebsite, companyInformation.companyDescription, companyInformation.address, companyInformation.country, companyInformation.city, companyInformation.pincode, companyInformation.companyLogo])
 
-    return { form, onFormSubmit, setValue }
-
-
+    return {
+        form,
+        onFormSubmit,
+        setValue,
+        errors: formState.errors,
+        isValid: formState.isValid
+    }
 }   

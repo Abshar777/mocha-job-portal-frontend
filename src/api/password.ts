@@ -1,10 +1,8 @@
 import { Services } from "@/constants/services"
 import { backendUrl } from "@/constants/variables"
-import { conformPasswordSchemaType } from "@/schema/auth/conformPasswordSchema"
-import { forgetPasswordSchemaType } from "@/schema/auth/forgetpassword"
 import axios from "axios"
 
-export const forgetPasswordApi = async (data: forgetPasswordSchemaType) => {
+export const forgetPasswordApi = async (data: any) => {
     const { data: response } = await axios.post(`${backendUrl}${Services.AUTH}/password/forgot`, data,
         { withCredentials: true }
     )

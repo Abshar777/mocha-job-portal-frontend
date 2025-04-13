@@ -6,11 +6,11 @@ import { countries } from "@/constants/countries";
 import { TbWorld } from "react-icons/tb";
 import { motion } from "framer-motion";
 import { item_variants } from "@/constants/framer-motion";
+import usePersonalDetails from "@/store/zustand/PersonalDetails";
 
-interface Props {}
-
-const PersonalDetails = (props: Props) => {
+const PersonalDetails = () => {
   const { form, onFormSubmit } = useDobAndDets();
+  const { setLoading } = usePersonalDetails();
   return (
     <div className="flex flex-col w-full px-[2rem]  gap-4">
       <Form {...form}>
@@ -41,7 +41,9 @@ const PersonalDetails = (props: Props) => {
                 <FormGeneratorV2
                   inputType="upload"
                   type="text"
-                  placeholder="Resume "
+                  loaderFn={setLoading}
+                  acceptedFileTypes=".pdf"
+                  placeholder="Resume (PDF)"
                   className={{
                     label: "text-white",
                   }}

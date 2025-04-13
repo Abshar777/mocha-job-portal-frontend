@@ -8,6 +8,10 @@ import { jobSeekerInitialState, jobSeekerSetps, recruiterInitialState, recruiter
 
 interface PersonalDetailsState extends TPersnolDetails {
     setRole: (role: Role) => void;
+    loading: boolean;
+    disabled: boolean;
+    setDisabled: (disabled: boolean) => void;
+    setLoading: (loading: boolean) => void;
     updateJobSeeker: (details: any) => void;
     updateRecruiter: (details: any) => void;
     reset: () => void;
@@ -23,16 +27,31 @@ interface PersonalDetailsState extends TPersnolDetails {
 const usePersonalDetails = create<PersonalDetailsState>()(
     persist(
         (set) => ({
+            loading: false,
+            disabled: false,
+            setLoading: (loading) => set({ loading }),
+            setDisabled: (disabled) => set({ disabled }),
             role: undefined,
             jobSeeker: jobSeekerInitialState,
             recruiter: recruiterInitialState,
             step: 0,
             steps: null,
-            nextStep: () => set((state) => ({ step: state.step + 1 })),
-            previousStep: () => set((state) => ({ step: state.step - 1 })),
+            nextStep: () => set((state) => {
+                if (state.loading || state.disabled) return { step: state.step };
+                if (state.step <= (state.steps?.length || 0) - 1) {
+                    return { step: state.step + 1 }
+                }
+                return { step: state.step }
+            }),
+            previousStep: () => set((state) => {
+                if (state.loading || state.disabled) return { step: state.step };
+                if (state.step > 0) {
+                    return { step: state.step - 1 }
+                }
+                return { step: state.step }
+            }),
             setRole: (role) => {
                 const steps = role === Role.JOBSEEKER ? jobSeekerSetps : recruiterSetps;
-                // console.log(steps)
                 return set({ role, steps })
             },
             updateJobSeeker: (details) =>
@@ -71,6 +90,7 @@ const usePersonalDetails = create<PersonalDetailsState>()(
                 recruiter: state.recruiter,
                 step: state.step,
                 steps: state.steps,
+                loading: state.loading,
             }),
         }
     )

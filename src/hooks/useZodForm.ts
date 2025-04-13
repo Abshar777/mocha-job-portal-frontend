@@ -29,11 +29,16 @@ const useZodForm = (
 export const useZodFormV2 = <T extends z.ZodSchema>(
   schema: T,
   mutation: Function,
-  defaultValues?: z.infer<T>
+  defaultValues?: z.infer<T>,
+  options?: {
+    mode?: 'onChange' | 'onBlur' | 'onSubmit' | 'onTouched' | 'all',
+    showToastOnError?: boolean
+  }
 ) => {
   const form = useForm<z.infer<T>>({
     resolver: zodResolver(schema),
     defaultValues,
+    mode: options?.mode || 'onSubmit', // Default is onSubmit, can be changed to onChange or onBlur
   });
 
   const { handleSubmit, formState, ...rest } = form;
@@ -41,13 +46,15 @@ export const useZodFormV2 = <T extends z.ZodSchema>(
   const onFormSubmit = handleSubmit(
     async (values) => mutation(values),
     (err) => {
-      Object.values(err).forEach((error: any) => {
-        if (error?.message) toast.error(error.message.toString());
-      });
+      if (options?.showToastOnError !== false) {
+        Object.values(err).forEach((error: any) => {
+          if (error?.message) toast.error(error.message.toString());
+        });
+      }
     }
   );
 
-  return { form, formState,errors:formState.errors, onFormSubmit, ...rest };
+  return { form, formState, errors: formState.errors, onFormSubmit, ...rest };
 };
 
 

@@ -11,7 +11,8 @@ import { Button } from "@heroui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import AnimatedButton from "@/components/animation/animatedButton";
 const page = () => {
-  const { role, step, steps, previousStep, nextStep } = usePersonalDetails();
+  const { role, step, steps, previousStep, nextStep, loading, disabled } =
+    usePersonalDetails();
   const title =
     step == 0
       ? "What is your role?"
@@ -47,17 +48,18 @@ const page = () => {
         >
           {step !== 0 && (
             <Button
+              disabled={loading}
               onPress={previousStep}
               color="secondary"
               size="sm"
-              className="bg-zinc-200/80 group py-[1.5rem] rounded-2xl text-black"
+              className="bg-zinc-200/80 disabled:opacity-50 group py-[1.5rem] rounded-2xl text-black"
             >
               <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-all duration-300" />
             </Button>
           )}
           <AnimatedButton
-            disabled={false}
-            isLoading={false}
+            disabled={loading || disabled}
+            isLoading={loading}
             onClick={nextStep}
             text="Next"
             color="primary"
