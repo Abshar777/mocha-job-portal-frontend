@@ -46,12 +46,15 @@ const usePersonalDetails = create<PersonalDetailsState>()(
                     })
                 }),
             updateRecruiter: (details) =>
-                set((state) => ({
-                    recruiter: {
-                        ...details,
+                set((state) => {
+                    const data = {
                         ...state.recruiter,
-                    },
-                })),
+                        ...details,
+                    }
+                    return ({
+                        recruiter: data
+                    })
+                }),
             reset: () =>
                 set({
                     role: undefined,

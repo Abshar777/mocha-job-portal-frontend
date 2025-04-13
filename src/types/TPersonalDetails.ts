@@ -10,53 +10,19 @@ export type TPersnolDetails = {
 
 export type TJobSeeker = {
     experience: boolean,
-    education: {
-        qualification: string,
-        Phd?: {
-            institute: string,
-            year: number,
-            percentage: number
-        },
-        diploma?: {
-            institute: string,
-            year: number,
-            percentage: number
-        },
-        postGraduation?: {
-            institute: string,
-            year: number,
-            percentage: number
-        },
-        graduation?: {
-            institute: string,
-            year: number,
-            percentage: number
-        },
-        twelth?: {
-            institute: string,
-            year: number,
-            percentage: number
-        },
-        tenth?: {
-            board: string,
-            year: number,
-            percentage: number,
-            medium: string,
-        }
-    }[],
+    education: string[],
     resume?: string,
-    resumeHeadline?: string,
     prefrence?: {
         city: string,
         salary: number,
-        preferedJobType: string,
+        jobRole: string,
     },
     skills: string[],
     tags: string[],
     gender?: string,
     age?: number,
-
-
+    dob?: string,
+    country?: string,
 }
 
 export type TRecruiter = {
@@ -67,9 +33,9 @@ export type TRecruiter = {
     companyLogo?: string,
     companyAddress?: {
         country: string,
-        state: string,
         city: string,
         pincode: number,
+        address: string,
     },
     numberOfEmployees?: number,
 

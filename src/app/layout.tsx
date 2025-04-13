@@ -43,7 +43,7 @@ export default function RootLayout({
           shadow="0 0 10px #F9CC16"
           color="#F9CC16"
           showSpinner={false}
-          zIndex={99999999999}
+          zIndex={999999999999999}
         />
         <HeroUIProvider>
           <ReactQueryProvider>

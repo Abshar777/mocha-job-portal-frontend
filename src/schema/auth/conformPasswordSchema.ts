@@ -6,7 +6,7 @@ const conformPasswordSchema = z.object({
     confirmPassword: z.string().min(8, 'Password must be at least 8 characters long')
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ["confirmPassword"], 
+    path: ["confirmPassword"],
 });
 
 export type conformPasswordSchemaType = z.infer<typeof conformPasswordSchema>

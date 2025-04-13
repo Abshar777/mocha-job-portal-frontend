@@ -10,18 +10,19 @@ import {
   useMultiSelect,
 } from "@/components/global/form-generator/multiSelect";
 import { item_variants } from "@/constants/framer-motion";
-import { skills } from "@/constants/personalDetailsConst";
-import { getRelatedSkills } from "@/lib/utils";
+import { industryTypes } from "@/constants/personalDetailsConst";
+import { useCompanyInformation } from "@/hooks/usePersnolDets";
 import usePersonalDetails from "@/store/zustand/PersonalDetails";
 import { motion } from "framer-motion";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
-const Skills = () => {
-  const { updateJobSeeker, jobSeeker } = usePersonalDetails();
-  const [value, setValue] = useState<string[]>(jobSeeker?.skills || []);
+const IndustryType = () => {
+  const { recruiter } = usePersonalDetails();
+  const { setValue: updateRecruiter } = useCompanyInformation();
+  const [value, setValue] = useState<string[]>(recruiter?.industryType || []);
   useEffect(() => {
-    updateJobSeeker({ skills: value });
+    updateRecruiter("industryType", value);
   }, [value]);
 
   return (
@@ -34,12 +35,12 @@ const Skills = () => {
       >
         <motion.div variants={item_variants} className="w-full ">
           <MultiSelectorTrigger className="bg-foreground ring-0 border border-input outline-0 outline-none text-secondary flex items-start px-[.7rem]">
-            <MultiSelectorInput placeholder="Select your framework" />
+            <MultiSelectorInput placeholder="Type  your framework" />
           </MultiSelectorTrigger>
         </motion.div>
         <MultiSelectorContent className="hidden">
           <MultiSelectorList>
-            {skills.map((skill) => (
+            {industryTypes.map((skill) => (
               <MultiSelectorItem key={skill} value={skill}>
                 {skill}
               </MultiSelectorItem>
@@ -59,16 +60,10 @@ const RelatedSkills = () => {
   const [relatedSkills, setRelatedSkills] = useState<string[]>([]);
 
   useEffect(() => {
-    let suggestions: string[];
-    if (inputValue.trim() === "") {
-      suggestions = getRelatedSkills(value);
-    } else {
-      suggestions = skills.filter((skill) =>
-        skill.toLowerCase().includes(inputValue.toLowerCase())
-      );
-    }
+    const suggestions = industryTypes.filter((skill) =>
+      skill.toLowerCase().includes(inputValue.toLowerCase())
+    );
 
-    // Make sure to filter out already selected skills
     const filteredSuggestions = suggestions
       .filter((skill) => !value.includes(skill))
       .slice(0, 20);
@@ -86,8 +81,7 @@ const RelatedSkills = () => {
           key={i}
           className="text-xs w-min px-2 py-1 rounded-md bg-muted text-black hover:bg-primary hover:text-white transition"
           onClick={() => {
-            // Add to existing values instead of replacing
-            onValueChange(skill); // The onValueChange in MultiSelect context already handles add/remove
+            onValueChange(skill);
             setInputValue("");
           }}
         />
@@ -96,4 +90,4 @@ const RelatedSkills = () => {
   );
 };
 
-export default Skills;
+export default IndustryType;

@@ -29,7 +29,7 @@ const FormGenerator = ({
   inputType,
   options,
   label,
-  placeholder="",
+  placeholder = "",
   register,
   name,
   errors,
@@ -170,12 +170,10 @@ const FormGenerator = ({
           <label
             htmlFor={label}
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-
           >
             {label}
           </label>
         </div>
-
       );
     default:
       break;
