@@ -1,6 +1,6 @@
 "use client";
 import BlurText from "@/components/animation/blurText";
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "@/components/page-section/personalDetails/container";
 import jobSeekerImg from "@/../public/jobSeeker.png";
 import AnimatedButton from "@/components/animation/animatedButton";
@@ -10,8 +10,19 @@ import usePersonalDetails from "@/store/zustand/PersonalDetails";
 import { motion } from "framer-motion";
 import { item_variants } from "@/constants/framer-motion";
 const RolePage = () => {
-  const { setRole, role: currentRole, nextStep, steps } = usePersonalDetails();
+  const {
+    setRole,
+    role: currentRole,
+    nextStep,
+    steps,
+    setDisabled,
+  } = usePersonalDetails();
 
+  useEffect(() => {
+    if (currentRole) {
+      setDisabled(false);
+    }
+  }, [currentRole]);
   return (
     <>
       <div className="grid md:grid-cols-2 grid-cols-1 gap-4">

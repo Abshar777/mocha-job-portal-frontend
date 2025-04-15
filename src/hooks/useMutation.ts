@@ -1,10 +1,10 @@
-import { MutationFunction, MutationKey, useMutation, useMutationState, useQueryClient } from "@tanstack/react-query"
+import { MutationFunction, MutationKey, QueryKey, useMutation, useMutationState, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { toast } from "sonner"
 
 export const useMutationData = (mutationKey: MutationKey,
     mutationFn: MutationFunction<any, any>,
-    queryKey?: string,
+    queryKey?: QueryKey,
     onSuccess?: (data: any) => void
 ) => {
     const client = useQueryClient()
@@ -26,7 +26,7 @@ export const useMutationData = (mutationKey: MutationKey,
         },
 
         onSettled: async () => {
-            return await client.invalidateQueries({ queryKey: [queryKey], exact: true })
+            return await client.invalidateQueries({ queryKey: queryKey, exact: true })
         }
     })
     return { mutate, isPending, isSuccess }

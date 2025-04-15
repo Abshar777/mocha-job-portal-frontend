@@ -2,8 +2,11 @@ import { useZodFormV2 } from "./useZodForm"
 import { companyInformationScheme, DobScheme, PrefrenceScheme } from "@/schema/persnolDetSchema"
 import usePersonalDetails from "@/store/zustand/PersonalDetails"
 import { useEffect } from "react"
+import { addRoleAndPersonalDetails, checkCompanyNameOrWebsite } from "@/api/user"
+import { useQueryData } from "./useQueryData"
+import { useMutationData } from "./useMutation"
+import { Role } from "@/constants/role"
 import { z } from "zod"
-
 
 export const useDobAndDets = () => {
     const { jobSeeker, updateJobSeeker, setDisabled } = usePersonalDetails()
@@ -16,6 +19,8 @@ export const useDobAndDets = () => {
         mode: 'onChange',
         showToastOnError: false
     })
+
+
     useEffect(() => {
         if (Object.keys(errors).length > 0) {
             setDisabled(true)
@@ -31,6 +36,11 @@ export const useDobAndDets = () => {
                 ...jobSeeker,
                 ...DobANDDetails
             })
+        }
+        if (DobANDDetails.dob.trim() === "" || DobANDDetails.country.trim() === "" || DobANDDetails.resume.trim() === "") {
+            setDisabled(true)
+        } else {
+            setDisabled(false)
         }
     }, [DobANDDetails.dob, DobANDDetails.country, DobANDDetails.resume])
 
@@ -63,6 +73,14 @@ export const usePrefrence = () => {
         }
     }, [prefrence.city, prefrence.jobRole, prefrence.salary])
 
+
+    useEffect(() => {
+        if (prefrence.city.trim() === "" || prefrence.jobRole.trim() === "" || prefrence.salary === 0) {
+            setDisabled(true)
+        } else {
+            setDisabled(false)
+        }
+    }, [prefrence.city, prefrence.jobRole, prefrence.salary])
     useEffect(() => {
         if (Object.keys(errors).length > 0) {
             setDisabled(true)
@@ -75,12 +93,24 @@ export const usePrefrence = () => {
 }
 
 
+// step 1 : company name and logo and employess number
+// step 2 : company address and country and city and pincode
+// step 3 : company description and website
+// step 4 : company industry type
+
+
+
 export const useCompanyInformation = () => {
-    const { recruiter, updateRecruiter, setDisabled } = usePersonalDetails();
+    const { recruiter, updateRecruiter, setDisabled, setLoading, step } = usePersonalDetails();
 
-    const fn = () => { }
+    const fn = () => { };
 
-    const { form, onFormSubmit, watch, setValue, formState, errors } = useZodFormV2(
+    const { refetch, error, isPending } = useQueryData(["companyName", recruiter.companyName], () => checkCompanyNameOrWebsite((recruiter.companyName || ""), (recruiter.companyWebsite || "")), {
+        enabled: !!recruiter.companyName || !!recruiter.companyWebsite,
+
+    })
+
+    const { form, onFormSubmit, watch, setValue, formState, errors, setError } = useZodFormV2(
         companyInformationScheme,
         fn,
         {
@@ -100,6 +130,61 @@ export const useCompanyInformation = () => {
             showToastOnError: false
         }
     );
+
+
+    useEffect(() => {
+        switch (step) {
+            case 1:
+                if (recruiter?.companyName?.trim?.() === "" || recruiter?.companyLogo?.trim?.() === "" || recruiter?.numberOfEmployees === 0) {
+                    setDisabled(true)
+                } else {
+                    if (Object.keys(errors).length > 0) {
+                        setDisabled(true)
+                    } else {
+                        setDisabled(false)
+                    }
+                }
+                break;
+            case 2:
+                if (recruiter?.companyAddress?.address?.trim?.() === "" || recruiter?.companyAddress?.country?.trim?.() === "" || recruiter?.companyAddress?.city?.trim?.() === "" || recruiter?.companyAddress?.pincode?.toString()?.trim?.() === "") {
+                    setDisabled(true)
+                } else {
+                    if (Object.keys(errors).length > 0) {
+                        setDisabled(true)
+                    } else {
+                        setDisabled(false)
+                    }
+                }
+                break;
+            case 3:
+                // check website url is valid or not
+                if (recruiter?.companyDescription?.trim?.() === "" || recruiter?.companyWebsite?.trim?.() === "") {
+                    setDisabled(true)
+                } else {
+                    if (Object.keys(errors).length > 0) {
+                        setDisabled(true)
+                    } else {
+                        setDisabled(false)
+                    }
+                }
+                break;
+
+        }
+    }, [step, recruiter.companyName, recruiter.companyWebsite, recruiter.companyDescription, recruiter.companyAddress, recruiter.companyLogo, recruiter.industryType, recruiter.numberOfEmployees,])
+
+    useEffect(() => {
+        if (error) {
+            setError("companyName", { message: "company name already exists " })
+            setError("companyWebsite", { message: "company website already exists" })
+        }
+        if (isPending) {
+            setLoading(true)
+        } else {
+            setLoading(false)
+        }
+    }, [error, isPending])
+
+
 
     useEffect(() => {
         if (Object.keys(errors).length > 0) {
@@ -123,6 +208,9 @@ export const useCompanyInformation = () => {
                 }
             })
         }
+        if (companyInformation.companyName || companyInformation.companyWebsite) {
+
+        }
     }, [companyInformation.companyName, companyInformation.companyWebsite, companyInformation.companyDescription, companyInformation.address, companyInformation.country, companyInformation.city, companyInformation.pincode, companyInformation.companyLogo])
 
     return {
@@ -132,4 +220,35 @@ export const useCompanyInformation = () => {
         errors: formState.errors,
         isValid: formState.isValid
     }
+}
+
+
+
+
+
+export const useAddRoleAndPersonalDetails = () => {
+    const { jobSeeker, updateJobSeeker, setDisabled, setLoading, role, recruiter, updateRecruiter, step, } = usePersonalDetails();
+
+    const { mutate, isPending } = useMutationData(
+        ["personalDetails"],
+        () => addRoleAndPersonalDetails(role as Role, jobSeeker, recruiter),
+        ["personalDetails"],
+        (data) => {
+            if (role === Role.JOBSEEKER) {
+                updateJobSeeker(data)
+            } else {
+                updateRecruiter(data)
+            }
+        }
+    )
+
+
+
+
+    useEffect(() => {
+        setLoading(isPending)
+
+    }, [isPending])
+
+    return { mutate, MutationLoading: isPending }
 }   

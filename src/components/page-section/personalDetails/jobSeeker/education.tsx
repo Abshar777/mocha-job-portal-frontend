@@ -5,12 +5,19 @@ import { education } from "@/constants/personalDetailsConst";
 import { cn } from "@/lib/utils";
 import usePersonalDetails from "@/store/zustand/PersonalDetails";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface Props {}
 
 const Education = (props: Props) => {
-  const { updateJobSeeker, jobSeeker } = usePersonalDetails();
+  const { updateJobSeeker, jobSeeker, setDisabled } = usePersonalDetails();
+  useEffect(() => {
+    if (jobSeeker.education.length > 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [jobSeeker.education]);
   return (
     <motion.div variants={item_variants} className="w-full">
       <div className="flex w-screen md:px-[2rem]  px-[1rem]  md:w-[40vw] items-center justify-center  flex-wrap gap-2 ">

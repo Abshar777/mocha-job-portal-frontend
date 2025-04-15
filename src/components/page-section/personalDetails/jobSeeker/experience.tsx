@@ -2,23 +2,21 @@
 import Container from "@/components/page-section/personalDetails/container";
 import expericedImg from "@/../public/experinced.png";
 import fresherImg from "@/../public/fresher.png";
-import AnimatedButton from "@/components/animation/animatedButton";
 import { experience } from "@/constants/personalDetailsConst";
-import { Button } from "@heroui/button";
-import { ArrowLeftIcon } from "lucide-react";
 import usePersonalDetails from "@/store/zustand/PersonalDetails";
-
+import { useEffect } from "react";
 const Experience = () => {
-  const { jobSeeker, step, steps, previousStep, nextStep, updateJobSeeker } =
+  const { jobSeeker, setDisabled, previousStep, nextStep, updateJobSeeker } =
     usePersonalDetails();
+  useEffect(() => {
+    setDisabled(false);
+  }, [jobSeeker.experience]);
   const isExperienced = jobSeeker.experience;
   const handleExperience = (exp: string) => {
-    console.log(exp,exp === "Experienced");
     updateJobSeeker({
       experience: exp === "Experienced",
     });
   };
-  console.log(jobSeeker.experience);
   return (
     <>
       <div className="grid md:grid-cols-2 grid-cols-1 gap-4">

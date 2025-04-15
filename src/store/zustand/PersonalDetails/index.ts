@@ -39,12 +39,12 @@ const usePersonalDetails = create<PersonalDetailsState>()(
             nextStep: () => set((state) => {
                 if (state.loading || state.disabled) return { step: state.step };
                 if (state.step <= (state.steps?.length || 0) - 1) {
-                    return { step: state.step + 1 }
+                    return { step: state.step + 1, disabled: true }
                 }
                 return { step: state.step }
             }),
             previousStep: () => set((state) => {
-                if (state.loading || state.disabled) return { step: state.step };
+                if (state.loading) return { step: state.step };
                 if (state.step > 0) {
                     return { step: state.step - 1 }
                 }
@@ -90,7 +90,7 @@ const usePersonalDetails = create<PersonalDetailsState>()(
                 recruiter: state.recruiter,
                 step: state.step,
                 steps: state.steps,
-                loading: state.loading,
+                disabled: state.disabled,
             }),
         }
     )

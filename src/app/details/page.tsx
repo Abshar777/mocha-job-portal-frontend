@@ -10,9 +10,21 @@ import { components } from "@/constants/personalDetailsConst";
 import { Button } from "@heroui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import AnimatedButton from "@/components/animation/animatedButton";
+import { useAddRoleAndPersonalDetails } from "@/hooks/usePersnolDets";
+import { Role as RoleType } from "@/constants/role";
 const page = () => {
-  const { role, step, steps, previousStep, nextStep, loading, disabled } =
-    usePersonalDetails();
+  const {
+    role,
+    step,
+    steps,
+    previousStep,
+    nextStep,
+    loading,
+    disabled,
+    jobSeeker,
+    recruiter,
+  } = usePersonalDetails();
+  const { mutate, MutationLoading } = useAddRoleAndPersonalDetails();
   const title =
     step == 0
       ? "What is your role?"
@@ -58,9 +70,21 @@ const page = () => {
             </Button>
           )}
           <AnimatedButton
-            disabled={loading || disabled}
-            isLoading={loading}
-            onClick={nextStep}
+            disabled={loading || disabled || MutationLoading}
+            isLoading={loading || MutationLoading}
+            onClick={() => {
+              if (step < (steps?.length || 0)) {
+                console.log("ahah1",steps?.length);
+                nextStep();
+              } else {
+                console.log("ahah2");
+                mutate({
+                  role: role as RoleType,
+                  jobSeeker: jobSeeker,
+                  recruiter: recruiter,
+                });
+              }
+            }}
             text="Next"
             color="primary"
             size="lg"

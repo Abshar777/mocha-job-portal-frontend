@@ -18,11 +18,18 @@ import { motion } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 
 const Skills = () => {
-  const { updateJobSeeker, jobSeeker } = usePersonalDetails();
+  const { updateJobSeeker, jobSeeker, setDisabled } = usePersonalDetails();
   const [value, setValue] = useState<string[]>(jobSeeker?.skills || []);
   useEffect(() => {
     updateJobSeeker({ skills: value });
   }, [value]);
+  useEffect(() => {
+    if (jobSeeker.skills.length > 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [jobSeeker.skills]);
 
   return (
     <div className="w-full flex flex-col gap-2">

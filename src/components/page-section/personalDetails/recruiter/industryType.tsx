@@ -18,11 +18,18 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 const IndustryType = () => {
-  const { recruiter } = usePersonalDetails();
-  const { setValue: updateRecruiter } = useCompanyInformation();
+  const { recruiter, setDisabled, updateRecruiter } = usePersonalDetails();
+  const { setValue: setValueCompanyInformation } = useCompanyInformation();
   const [value, setValue] = useState<string[]>(recruiter?.industryType || []);
   useEffect(() => {
-    updateRecruiter("industryType", value);
+    setValueCompanyInformation("industryType", value);
+    updateRecruiter({ industryType: value });
+
+    if (value.length > 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
   }, [value]);
 
   return (

@@ -18,7 +18,7 @@ export const useAuth = (type: "login" | "register") => {
     const apiFn = type === "login" ? login : registerApi;
     const { mutate, isPending } = useMutationData(['user'],
         (data) => apiFn(data),
-        "user",
+        ['user'],
         onSubmit
     )
     const { register, onFormSubmit, errors, reset } = useZodForm(schema, mutate)
