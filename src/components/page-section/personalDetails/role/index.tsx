@@ -2,7 +2,7 @@
 import BlurText from "@/components/animation/blurText";
 import React, { useEffect } from "react";
 import Container from "@/components/page-section/personalDetails/container";
-import jobSeekerImg from "@/../public/jobSeeker.png";
+import jobSeekerImg from "@/../public/jobseeker.png";
 import AnimatedButton from "@/components/animation/animatedButton";
 import recruiterImg from "@/../public/recuirter.png";
 import { Role, Roles } from "@/constants/role";

@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
 
 
 
-  console.log(refreshToken, "🟢 refreshToken", pathname);
+  // console.log(refreshToken, "🟢 refreshToken", pathname);
 
   if (StaticRoutes.includes(pathname) || pathname.startsWith("/api")) {
     console.log("🟢 its Static Route");
