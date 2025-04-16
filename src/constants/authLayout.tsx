@@ -3,6 +3,7 @@ import otpFormImage from "@/../public/otp.png"
 import forgotPasswordImage from "@/../public/forgotPassword.png"
 import conformPasswordImage from "@/../public/conformPassword.png"
 
+
 export const quateImages = [{
     path: "/auth/login",
     image: loginFormImage
