@@ -1,9 +1,7 @@
-import axios from "axios";
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import FacebookProvider from "next-auth/providers/facebook";
-import { OAuthLogin } from "@/api/auth";
 import { cookies } from "next/headers";
 
 
@@ -28,7 +26,18 @@ export const authOptions: NextAuthOptions = {
                 try {
                     const token = account.id_token || account.access_token as string;
                     // console.log(token, "⌚ token")
-                    const { data } = await OAuthLogin(token, account.provider)
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/oauth-login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            token,
+                            provider: account.provider
+                        }),
+                        credentials: 'include'
+                    });
+                    const { data } = await response.json();
                     // console.log({ data }, "🟢 data")
                     if (data.token && data.refreshToken) {
                         const cookieStore = await cookies();

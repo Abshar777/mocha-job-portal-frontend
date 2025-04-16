@@ -11,7 +11,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { useEffect, useState } from "react";
 interface Props {}
 
-const page = (props: Props) => {
+const OtpPage = (props: Props) => {
   const { userInfo } = useSelector((state: RootState) => state.Auth);
   const router = useRouter();
   const [clientUserInfo, setClientUserInfo] = useState<typeof userInfo | null>(
@@ -60,4 +60,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default OtpPage;

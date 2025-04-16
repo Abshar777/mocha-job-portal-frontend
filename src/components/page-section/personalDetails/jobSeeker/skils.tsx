@@ -15,7 +15,7 @@ import { getRelatedSkills } from "@/lib/utils";
 import usePersonalDetails from "@/store/zustand/PersonalDetails";
 import { motion } from "framer-motion";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 const Skills = () => {
   const { updateJobSeeker, jobSeeker, setDisabled } = usePersonalDetails();
@@ -84,8 +84,8 @@ const RelatedSkills = () => {
   }, [inputValue, value]);
 
   return (
-    <div className="flex transition-all duration-[.3s] ease-in-out justify-center flex-wrap gap-2 mt-2">
-      {relatedSkills.map((skill, i) => (
+    <div className="flex transition-all duration-300  ease-in-out justify-center flex-wrap gap-2 mt-2">
+      {relatedSkills.map((skill: string, i: number) => (
         <AnimatedButton
           isLoading={false}
           size="sm"

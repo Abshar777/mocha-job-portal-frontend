@@ -1,21 +1,19 @@
+"use client"
 import { container_variants } from "@/constants/framer-motion";
 import { item_variants } from "@/constants/framer-motion";
 import { motion } from "framer-motion";
-import React from "react";
 import { TbLock } from "react-icons/tb";
 import FormGenerator from "../global/form-generator";
 import { TbMail } from "react-icons/tb";
 import Link from "next/link";
-import { Checkbox } from "../ui/checkbox";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "@/hooks/useAuth";
 import AnimatedButton from "../animation/animatedButton";
 import { OAuthProviders } from "../global/OAuthProviders";
-interface Props {}
 
 
 
-const RegisterForm = (props: Props) => {
+const RegisterForm = () => {
   
   const { register, onFormSubmit, errors, isPending } = useAuth("register");
 

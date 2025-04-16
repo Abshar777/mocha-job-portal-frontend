@@ -24,6 +24,9 @@ interface MultiSelectorProps
   values: string[];
   onValuesChange: (value: string[]) => void;
   loop?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+  dir?: "ltr" | "rtl";
 }
  
 interface MultiSelectContextProps {

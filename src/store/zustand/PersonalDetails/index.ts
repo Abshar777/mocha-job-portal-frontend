@@ -1,5 +1,5 @@
 // store/personalDetails.ts
-
+"use client"
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Role } from "@/constants/role";
@@ -32,8 +32,23 @@ const usePersonalDetails = create<PersonalDetailsState>()(
             setLoading: (loading) => set({ loading }),
             setDisabled: (disabled) => set({ disabled }),
             role: undefined,
-            jobSeeker: jobSeekerInitialState,
-            recruiter: recruiterInitialState,
+            jobSeeker: {
+                experience: false,
+                skills: [],
+                education: [],
+                prefrence: undefined,
+                resume: undefined,
+                tags: [],
+            },
+            recruiter: {
+                numberOfEmployees: undefined,
+                companyAddress: undefined,
+                companyDescription: undefined,
+                companyLogo: undefined,
+                companyName: undefined,
+                companyWebsite: undefined,
+                industryType: undefined,
+            },
             step: 0,
             steps: null,
             nextStep: () => set((state) => {

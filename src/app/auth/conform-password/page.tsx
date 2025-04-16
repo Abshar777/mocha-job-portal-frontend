@@ -6,7 +6,7 @@ import { container_variants, item_variants } from "@/constants/framer-motion";
 import ConformPasswordForm from "@/components/forms/conformPasswordFrom";
 
 
-const page = () => {
+const ConformPasswordPage = () => {
 
   return (
     <div className="w-full  relative z-[1] h-full flex flex-col items-center justify-center">
@@ -33,10 +33,10 @@ const page = () => {
             Enter your new password
           </motion.p>
         </div>
-        <ConformPasswordForm />
+        {/* <ConformPasswordForm /> */}
       </motion.div>
     </div>
   );
 };
 
-export default page;
+export default ConformPasswordPage;

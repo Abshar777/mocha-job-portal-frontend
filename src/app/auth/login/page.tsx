@@ -6,7 +6,7 @@ import { container_variants, item_variants } from "@/constants/framer-motion";
 import LoginForm from "@/components/forms/loginForm";
 
 
-const page = () => {
+const LoginPage = () => {
 
   return (
     <div className="w-full relative z-[1] h-full flex flex-col items-center justify-center">
@@ -39,4 +39,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default LoginPage;

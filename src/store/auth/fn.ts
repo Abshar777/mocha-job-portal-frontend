@@ -1,3 +1,4 @@
+"use client"
 import { PayloadAction } from "@reduxjs/toolkit";
 import { TUser } from "./type";
 import { Role } from "@/constants/role";

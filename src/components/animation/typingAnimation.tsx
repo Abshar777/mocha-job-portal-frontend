@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
+import {  useAnimation } from "framer-motion";
 
 export default function TypewriterEffect({ quotes }: { quotes: string[] }) {
   const [currentQuote, setCurrentQuote] = useState(0);
@@ -27,7 +27,7 @@ export default function TypewriterEffect({ quotes }: { quotes: string[] }) {
       }
 
       // Move to the next quote
-      setCurrentQuote((prev) => (prev + 1) % quotes.length);
+      setCurrentQuote((prev: number) => (prev + 1) % quotes.length);
     };
 
     timeout = setTimeout(typeWriter, 1000);
@@ -48,7 +48,7 @@ export default function TypewriterEffect({ quotes }: { quotes: string[] }) {
 
   return (
     <div className="min-h-[50%]  max-h-[50%]">
-      <p className="text-2xl transition-all duration-[.3s] typeWriter font-bold font-secondary">
+      <p className="text-2xl transition-all duration-300  typeWriter font-bold font-secondary">
         {currentText}
        
       </p>

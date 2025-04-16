@@ -1,15 +1,15 @@
 "use client";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import loginSchema from "@/schema/auth/login.schema";
 import registerSchema from "@/schema/auth/register.schema";
-import { check, login, register as registerApi } from "@/api/auth";
+import {  login, register as registerApi } from "@/api/auth";
 import { useMutationData } from "./useMutation";
 import useZodForm from "./useZodForm";
-import { LogoutUser, SetUser } from "@/store/auth/authSlice";
+import { SetUser } from "@/store/auth/authSlice";
 import { toast } from "sonner";
-import { AppDispatch, RootState } from "@/store/store";
+import { AppDispatch } from "@/store/store";
 import { ApiResponse } from "@/types";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 
 export const useAuth = (type: "login" | "register") => {
     const router = useRouter()

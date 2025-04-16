@@ -79,8 +79,8 @@ const RelatedSkills = () => {
   }, [inputValue, value]);
 
   return (
-    <div className="flex transition-all duration-[.3s] ease-in-out justify-center flex-wrap gap-2 mt-2">
-      {relatedSkills.map((skill, i) => (
+    <div className="flex transition-all duration-300  ease-in-out justify-center flex-wrap gap-2 mt-2">
+      {relatedSkills.map((skill: string, i: number) => (
         <AnimatedButton
           isLoading={false}
           size="sm"

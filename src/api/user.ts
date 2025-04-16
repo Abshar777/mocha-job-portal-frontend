@@ -1,3 +1,4 @@
+"use client"
 import { apiRoutes, Services } from "@/constants/services";
 import { TJobSeeker, TRecruiter } from "@/types/TPersonalDetails";
 import axiosInstance from "@/utils/axios";

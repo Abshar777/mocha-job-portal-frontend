@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { Services } from './constants/services';
-import axios, { AxiosError } from 'axios';
+
 import { accessTokenActions } from './actions/middlewareActions';
 import { conformPasswordAccessApi } from "./api/password"
 
@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get('token')?.value;
   const refreshToken = request.cookies.get('__refreshToken')?.value;
-  
+
 
 
   console.log(refreshToken, "🟢 refreshToken", pathname);
@@ -28,8 +28,8 @@ export async function middleware(request: NextRequest) {
   if (pathname === "/auth/conform-password") {
     const resetToken = request.cookies.get('reset_session')?.value;
     console.log("🟢 its conform password route", resetToken);
-    try{
-      if(!resetToken){
+    try {
+      if (!resetToken) {
         return NextResponse.redirect(new URL("/auth/login", request.url))
       }
       const { data } = await conformPasswordAccessApi(resetToken)
@@ -62,11 +62,15 @@ export async function middleware(request: NextRequest) {
 
     // If access token fails or doesn't exist, try refresh token
     if (refreshToken) {
-      const { data } = await axios.post(`${API_URL}${Services.AUTH}/auth/token`, {
-        refreshToken
-      }, {
-        withCredentials: true
+      const response = await fetch(`${API_URL}${Services.AUTH}/auth/token`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ refreshToken })
       });
+      const data = await response.json();
       console.log(data, "🟢 response refresh token");
       // Clone the response and set the new access token
 
@@ -99,13 +103,13 @@ export async function middleware(request: NextRequest) {
 
   } catch (error) {
 
-    if (!(error as AxiosError).response) {
+    if (!error) {
       return NextResponse.redirect(new URL('/404', request.url));
     }
     const newResponse = NextResponse.redirect(new URL('/auth/login', request.url));
     newResponse.cookies.delete('token');
     newResponse.cookies.delete('__refreshToken');
-    console.log('🔴 Auth middleware error:', ((error as AxiosError).response?.data as { message: string }).message);
+    console.log('🔴 Auth middleware error:', (error as Error).message);
     return newResponse;
 
 

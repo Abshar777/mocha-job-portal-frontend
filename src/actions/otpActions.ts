@@ -1,6 +1,5 @@
+"use client";
 import { otpStatus } from "@/api/auth";
-import { TUser } from "@/store/auth/type";
-import store from "@/store/store";
 import { AxiosError } from "axios";
 import { redirect } from "next/navigation";
 

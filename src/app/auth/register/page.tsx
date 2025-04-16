@@ -8,7 +8,7 @@ import RegisterForm from "@/components/forms/registerForm";
 
 interface Props {}
 
-const page = (props: Props) => {
+const RegisterPage = (props: Props) => {
   return (
     <div className="w-full relative z-[1] h-full flex flex-col items-center justify-center">
       <div className="absolute md:hidden flex justify-center  w-full  bottom-0 scale-[.9] left-0 ">
@@ -40,4 +40,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default RegisterPage;

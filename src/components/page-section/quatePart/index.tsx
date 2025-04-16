@@ -2,7 +2,6 @@
 import { quateImages } from "@/constants/authLayout";
 import Image, { StaticImageData } from "next/image";
 import React from "react";
-import quate from "@/../public/loginFormImage.f7f800ccb930349b460a.png";
 import TypingAnimation from "@/components/animation/typingAnimation";
 import { Button } from "@heroui/react";
 import logo from "@/../public/logo.png";
@@ -21,9 +20,8 @@ const quotes = [
   "Every great achievement was once considered impossible. Take the leap and explore new horizons!",
 ];
 
-const index = (props: Props) => {
+const QuatePart = (props: Props) => {
   const pathname = usePathname()
-  console.log(pathname)
   const image = quateImages.find((item) => item.path === pathname)?.image as StaticImageData
   return (
     <motion.div
@@ -88,4 +86,4 @@ const index = (props: Props) => {
   );
 };
 
-export default index;
+export default QuatePart;

@@ -1,3 +1,4 @@
+"use client"
 import { createSlice } from "@reduxjs/toolkit";
 import { TUser } from "./type";
 import { logoutUser, setUser, updateUser } from "./fn";

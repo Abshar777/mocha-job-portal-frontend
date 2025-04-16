@@ -1,3 +1,4 @@
+"use client"
 import { Spinner } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@heroui/react";

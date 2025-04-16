@@ -1,3 +1,4 @@
+"use client"
 import axiosInstance from "@/utils/axios"
 import axios from "axios"
 import { Services } from "@/constants/services"
@@ -72,7 +73,7 @@ export const getRole = async () => {
 }
 
 
-export const OAuthLogin = async (token: string,provider:string) => {
+export const OAuthLogin = async (token: string, provider: string) => {
     return await axios.post(`${backendUrl}${Services.AUTH}/auth/oauth-login`, {
         token,
         provider,

@@ -6,7 +6,7 @@ import { container_variants, item_variants } from "@/constants/framer-motion";
 import ForgetPasswordForm from "@/components/forms/forgetPassword";
 
 
-const page = () => {
+const ForgetPasswordPage = () => {
 
   return (
     <div className="w-full relative z-[1] h-full flex flex-col items-center justify-center">
@@ -39,4 +39,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ForgetPasswordPage;

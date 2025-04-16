@@ -1,3 +1,4 @@
+"use client"
 import { Services } from "@/constants/services"
 import { backendUrl } from "@/constants/variables"
 import axios from "axios"

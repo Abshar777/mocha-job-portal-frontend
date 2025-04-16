@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-
-import axios from "axios";
 import { NextRequest } from "next/server";
 import { Services } from '../constants/services';
 import { TUser } from "@/store/auth/type";
@@ -16,12 +14,14 @@ export const accessTokenActions = async (request: NextRequest, token?: string) =
     const { pathname } = request.nextUrl;
     const accessToken = request.cookies.get('token')?.value || token;
     // console.log(accessToken, "🟢 access token")
-    const { data } = await axios.get(`${API_URL}${Services.AUTH}/auth/check`, {
+    const response = await fetch(`${API_URL}${Services.AUTH}/auth/check`, {
+        method: 'GET',
         headers: {
-            'authorization': `Bearer ${accessToken}`
+            'Authorization': `Bearer ${accessToken}`
         },
-        withCredentials: true
+        credentials: 'include'
     });
+    const data = await response.json();
 
 
     // console.log("🟢 response access token is 200");

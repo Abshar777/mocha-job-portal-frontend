@@ -1,3 +1,4 @@
+"use client"
 import { TJobSeeker, TRecruiter, TSteps } from "@/types/TPersonalDetails";
 import Experience from "@/components/page-section/personalDetails/jobSeeker/experience";
 import { JSX } from "react";
