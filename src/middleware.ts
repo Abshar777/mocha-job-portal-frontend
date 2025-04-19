@@ -13,6 +13,7 @@ const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  console.log(request.cookies, "🟢 cookies");
   const accessToken = request.cookies.get('token')?.value;
   const refreshToken = request.cookies.get('__refreshToken')?.value;
 
