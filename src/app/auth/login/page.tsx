@@ -4,10 +4,12 @@ import Logo from "@/../public/svgs/dark-logo.svg";
 import { motion } from "framer-motion";
 import { container_variants, item_variants } from "@/constants/framer-motion";
 import LoginForm from "@/components/forms/loginForm";
-
-
+import { test } from "@/api/test";
+import { useEffect } from "react";
 const LoginPage = () => {
-
+  useEffect(() => {
+    test();
+  }, []);
   return (
     <div className="w-full relative z-[1] h-full flex flex-col items-center justify-center">
       <div className="absolute md:hidden flex justify-center  w-full  bottom-0 scale-[.9] left-0 ">
