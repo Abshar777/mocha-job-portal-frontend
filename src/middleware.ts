@@ -6,14 +6,14 @@ import { accessTokenActions } from './actions/middlewareActions';
 import { conformPasswordAccessApi } from "./api/password"
 
 const AuthRoutes = ['/auth/login', '/auth/register', '/auth/otp'];
-const StaticRoutes = ["/home", '/about', "/contact", "/terms", "/privacy", "/faq", "/pricing", "/offline", "/test", "/auth/forgot-password"]
+const StaticRoutes = ["/home", '/about', "/contact", "/terms", "/privacy", "/faq", "/pricing", "/offline", "/recruiter", "/auth/forgot-password"]
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  console.log(request.cookies, "🟢 cookies");
+  // console.log(request.cookies, "🟢 cookies");
   const accessToken = request.cookies.get('token')?.value;
   const refreshToken = request.cookies.get('__refreshToken')?.value;
 
