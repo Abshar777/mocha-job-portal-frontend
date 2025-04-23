@@ -1,7 +1,7 @@
 export enum Services {
     AUTH = "/api/auth-service",
     USER = "/api/user-service",
-    PRODUCT = "/api/product-service",
+    COMPANY = "/api/company-service",
     ORDER = "/api/order-service",
     
 }
@@ -10,6 +10,8 @@ export enum Services {
 export enum apiRoutes {
     util = "/util",
     user = "/user",
+    company = "/company",
+    subscription = "/subscription",
 }
 
 

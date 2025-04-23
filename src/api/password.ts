@@ -1,5 +1,5 @@
 "use client"
-import { Services } from "@/constants/services"
+import { Services } from "@/constants/apiServices"
 import { backendUrl } from "@/constants/variables"
 import axios from "axios"
 

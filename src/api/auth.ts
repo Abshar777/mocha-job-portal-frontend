@@ -1,7 +1,7 @@
 "use client"
 import axiosInstance from "@/utils/axios"
 import axios from "axios"
-import { Services } from "@/constants/services"
+import { Services } from "@/constants/apiServices"
 import { Role } from "@/constants/role"
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL

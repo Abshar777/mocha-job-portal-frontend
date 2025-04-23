@@ -27,7 +27,7 @@ const Footer = () => {
       </div>
       {FooterSection.map((section) => (
         <div className="translate-y-5" key={section.title}>
-          <ul className="flex flex-col gap-1 text-sm">
+          <ul className="flex flex-col text-white/70 gap-1 text-sm">
             {section.links.map((link) => (
               <li key={link.label}>
                 <Link href={link.href}>{link.label}</Link>

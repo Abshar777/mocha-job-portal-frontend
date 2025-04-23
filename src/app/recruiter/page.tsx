@@ -1,11 +1,8 @@
-import React from 'react'
+import { redirect } from "next/navigation";
+
 
 const page = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return redirect("/recruiter/pricing");
+};
 
-export default page
+export default page;

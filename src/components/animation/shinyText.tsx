@@ -23,7 +23,6 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   useEffect(() => {
     const intervel = setInterval(() => {
       const nextIndex = index == texts.length - 1 ? 0 : index + 1;
-      console.log(nextIndex);
       setIndex(nextIndex);
     }, 2000);
     return () => {
@@ -59,29 +58,29 @@ const ShinyText: React.FC<ShinyTextProps> = ({
     //     animationDuration: animationDuration,
     //   }}
     // >
-      <AnimatePresence mode="wait">
-        <motion.p
-          // style={{
-          //   backgroundImage:
-          //     "linear-gradient(120deg, rgba(255, 215, 0, 0.2) 40%, rgba(255, 223, 0, 1) 50%, rgba(255, 215, 0, 0.2) 60%)",
-          //   backgroundSize: "100% 100%",
-          //   WebkitBackgroundClip: "text",
-          //   animationDuration: animationDuration,
-          // }}
-          key={index}
-          variants={veriants}
-          initial={veriants.initial}
-          animate={veriants.enter}
-          exit={veriants.exit}
-          transition={{
-            transy: { type: "spring", stiffness: 500, damping: 30 },
-            opacity: { duration: 0.2 },
-          }}
-          className="font-medium text-md"
-        >
-          {texts[index]}
-        </motion.p>
-      </AnimatePresence>
+    <AnimatePresence mode="wait">
+      <motion.p
+        // style={{
+        //   backgroundImage:
+        //     "linear-gradient(120deg, rgba(255, 215, 0, 0.2) 40%, rgba(255, 223, 0, 1) 50%, rgba(255, 215, 0, 0.2) 60%)",
+        //   backgroundSize: "100% 100%",
+        //   WebkitBackgroundClip: "text",
+        //   animationDuration: animationDuration,
+        // }}
+        key={index}
+        variants={veriants}
+        initial={veriants.initial}
+        animate={veriants.enter}
+        exit={veriants.exit}
+        transition={{
+          transy: { type: "spring", stiffness: 500, damping: 30 },
+          opacity: { duration: 0.2 },
+        }}
+        className="font-medium text-md"
+      >
+        {texts[index]}
+      </motion.p>
+    </AnimatePresence>
     // </div>
   );
 };

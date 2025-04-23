@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import { Services } from '../constants/services';
+import { Services } from '../constants/apiServices';
 import { TUser } from "@/store/auth/type";
 
 

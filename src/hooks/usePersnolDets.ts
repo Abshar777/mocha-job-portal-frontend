@@ -93,11 +93,6 @@ export const usePrefrence = () => {
 }
 
 
-// step 1 : company name and logo and employess number
-// step 2 : company address and country and city and pincode
-// step 3 : company description and website
-// step 4 : company industry type
-
 
 
 export const useCompanyInformation = () => {

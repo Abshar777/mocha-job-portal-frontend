@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { Services } from './constants/services';
+import { Services } from './constants/apiServices';
 
 import { accessTokenActions } from './actions/middlewareActions';
 import { conformPasswordAccessApi } from "./api/password"
 
 const AuthRoutes = ['/auth/login', '/auth/register', '/auth/otp'];
-const StaticRoutes = ["/home", '/about', "/contact", "/terms", "/privacy", "/faq", "/pricing", "/offline", "/recruiter", "/auth/forgot-password"]
+const addOnRoutes = ["/recruiter/pricing", "/recruiter","/recruiter/payment","/recruiter/jobs"]
+const StaticRoutes = ["/home", '/about', "/contact", "/terms", "/privacy", "/faq", "/pricing", "/offline", "/auth/forgot-password", ...addOnRoutes]
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 

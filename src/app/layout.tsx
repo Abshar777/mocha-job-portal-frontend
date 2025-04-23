@@ -33,6 +33,10 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
           rel="stylesheet"
         />
+        <script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          async
+        ></script>
       </head>
       <body
         suppressHydrationWarning={true}
@@ -53,9 +57,7 @@ export default function RootLayout({
               richColors
               theme="dark"
             />
-            <StoreProvider>
-              {children}
-            </StoreProvider>
+            <StoreProvider>{children}</StoreProvider>
           </ReactQueryProvider>
         </HeroUIProvider>
       </body>

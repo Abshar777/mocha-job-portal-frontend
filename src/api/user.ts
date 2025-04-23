@@ -1,5 +1,5 @@
 "use client"
-import { apiRoutes, Services } from "@/constants/services";
+import { apiRoutes, Services } from "@/constants/apiServices";
 import { TJobSeeker, TRecruiter } from "@/types/TPersonalDetails";
 import axiosInstance from "@/utils/axios";
 import { v4 as uuid } from "uuid";
